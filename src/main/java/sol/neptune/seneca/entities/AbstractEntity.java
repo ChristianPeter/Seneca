@@ -4,6 +4,7 @@
  */
 package sol.neptune.seneca.entities;
 
+import java.util.UUID;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,6 +30,21 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
         this.id = id;
     }
 
+    private String uuid;
+
+    public String getUuid() {
+        if (uuid == null){
+            uuid = UUID.randomUUID().toString();
+        }
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+    
+    
+    
     @Override
     public boolean isNew() {
         return (this.id == null);
