@@ -5,7 +5,11 @@
 package sol.neptune.seneca.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -19,6 +23,10 @@ public class Presentation extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
     private String description;
+    
+    @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL)
+    private List<PresentationItem> presentationItems = new ArrayList<PresentationItem>();
+    
 
     /* getter and setter */
     public String getName() {
@@ -36,4 +44,15 @@ public class Presentation extends AbstractEntity implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<PresentationItem> getPresentationItems() {
+        return presentationItems;
+    }
+
+    public void setPresentationItems(List<PresentationItem> presentationItems) {
+        this.presentationItems = presentationItems;
+    }
+    
+    
+    
 }

@@ -4,11 +4,17 @@
  */
 package sol.neptune.seneca.entities;
 
+import java.util.Date;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.Version;
 
 /**
  *
@@ -42,6 +48,41 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+    
+    @Version
+    private Integer objectVersion;
+
+    public Integer getObjectVersion() {
+        return objectVersion;
+    }
+
+    public void setObjectVersion(Integer objectVersion) {
+        this.objectVersion = objectVersion;
+    }
+    
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateCreated;
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date lastModified;
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+    
     
     
     
@@ -82,5 +123,15 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     @Override
     public String toString() {
         return "Entity: " + this.getClass().getName()+ "[ id=" + getId() + " ]";
+    }
+    
+    @PrePersist
+    public void initDateCreated(){
+        setDateCreated(new Date());
+    }
+    
+    @PreUpdate
+    public void updateLastModified(){
+        setLastModified(new Date());
     }
 }

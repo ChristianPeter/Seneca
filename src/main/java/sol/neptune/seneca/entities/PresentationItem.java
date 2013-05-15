@@ -25,6 +25,9 @@ public class PresentationItem extends AbstractEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "doc_id")
     private Document document;
+    
+    private Integer duration;
+    
 
     /* getter and setter */
     public Presentation getPresentation() {
@@ -42,4 +45,15 @@ public class PresentationItem extends AbstractEntity implements Serializable {
     public void setDocument(Document document) {
         this.document = document;
     }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+    
+    
+    
 }
