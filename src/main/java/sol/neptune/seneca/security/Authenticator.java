@@ -4,6 +4,7 @@
  */
 package sol.neptune.seneca.security;
 
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -17,7 +18,9 @@ import sol.neptune.seneca.controller.UserAccountFacade;
  */
 @ManagedBean(name = "authenticator")
 @RequestScoped
-public class Authenticator {
+public class Authenticator implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final String USER_SESSION_KEY = "user";
     @EJB

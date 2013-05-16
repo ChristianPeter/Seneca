@@ -42,7 +42,12 @@ public class ScheduleItem extends AbstractEntity implements Serializable {
     }
 
     public void setSchedule(Schedule schedule) {
+        // not sure if all this logic is really required...
+        if(this.getSchedule() != null){
+            this.getSchedule().getScheduleItems().remove(this);
+        }
         this.schedule = schedule;
+        this.getSchedule().getScheduleItems().add(this);
     }
 
     public boolean isActive() {
