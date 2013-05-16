@@ -5,29 +5,26 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    
+
     <f:view contentType="text/html">
         <h:head>
             <title>#{pageTitle}</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             <!-- Bootstrap -->
             <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+            <link href="../assets/css/login.css" rel="stylesheet" media="screen"/>
         </h:head>
         <h:body>
 
             <!-- main content -->
 
-            <div class="container">
-                <ui:insert name="content">Empty page</ui:insert>
-            </div>
-
-
+            <ui:insert name="content">Empty page</ui:insert>
 
             <!-- scripts at the bottom -->    
             <script src="../assets/lib/jquery-1.9.1.min.js"></script>
             <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 
-            
+
         </h:body>
 
     </f:view>

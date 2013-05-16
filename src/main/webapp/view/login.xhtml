@@ -7,14 +7,25 @@
     <ui:param name="pageTitle" value="Login"/>
 
     <ui:define name="content">
-        login
-        <h:form>
-            <h:inputText id="username" value="#{authenticator.username}"/>
-            <h:inputSecret id="password" value="#{authenticator.password}"/>
-            
-            <h:commandButton value="login" action="#{authenticator.login()}"/>
-        </h:form>
-        
+
+
+        <div class="container">
+
+            <h:form class="form-signin">
+                <h2 class="form-signin-heading">Please login in</h2>
+
+                <h:inputText id="username" styleClass="input-block-level" value="#{authenticator.username}"/>
+                <h:inputSecret id="password" styleClass="input-block-level" value="#{authenticator.password}"/>
+
+                <label class="checkbox">
+                </label>
+                <h:commandButton styleClass="btn btn-large btn-primary" value="login" action="#{authenticator.login()}"/>
+            </h:form>
+
+        </div> <!-- /container -->
+
+
+
 
     </ui:define>
 
