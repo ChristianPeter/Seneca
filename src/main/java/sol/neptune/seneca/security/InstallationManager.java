@@ -73,8 +73,8 @@ public class InstallationManager  {
     }
     public void createAdmin(){
          Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "searching for admin user");
-        //UserAccount admin = userAccountFacade.findByUsername("admin");
-       UserAccount admin = null;
+        UserAccount admin = userAccountFacade.findByUsername("admin");
+//       UserAccount admin = null;
         
         if (admin == null){
             

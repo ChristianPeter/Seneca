@@ -11,6 +11,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import sol.neptune.seneca.controller.UserAccountFacade;
+import sol.neptune.seneca.entities.UserAccount;
 
 /**
  *
@@ -21,7 +22,6 @@ import sol.neptune.seneca.controller.UserAccountFacade;
 public class Authenticator implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     public static final String USER_SESSION_KEY = "user";
     @EJB
     private UserAccountFacade userAccountFacade;
@@ -29,9 +29,23 @@ public class Authenticator implements Serializable {
     private String password;
 
     public String login() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().getSessionMap().put(USER_SESSION_KEY, "dummy");
-        return "/view/home?faces-redirect=true";
+
+
+        if (username != null) {
+            UserAccount user = userAccountFacade.findByUsername(username);
+            if (user== null){
+                // no user found!
+                return "";
+            }
+            if (user.getPassword().equals(password)) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.getExternalContext().getSessionMap().put(USER_SESSION_KEY, user.getId());
+                return "/view/home?faces-redirect=true";
+            }
+        }
+
+
+        return "";
     }
 
     public String logout() {
@@ -42,8 +56,7 @@ public class Authenticator implements Serializable {
         return AuthenticationPhaseListener.USER_LOGIN_OUTCOME;
 
     }
-    
-    
+
     /* getter & setter */
     public String getUsername() {
         return username;
@@ -60,7 +73,4 @@ public class Authenticator implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
-    
 }
