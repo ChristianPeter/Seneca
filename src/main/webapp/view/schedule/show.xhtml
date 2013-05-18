@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/view/templates/template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:param name="pageTitle" value="Schedule List"/>
+
+    <ui:define name="content">
+
+        <h:form>
+
+            <h:commandButton value="New" action="#{scheduleManager.create()}"/>
+
+            <h:dataTable value="#{scheduleManager.datamodel}" var="item" styleClass="table table-striped">
+                <h:column>
+                    <h:commandLink value="" styleClass="btn" title="edit" action="#{scheduleManager.edit()}">
+                        <i class="icon-edit"></i>
+                    </h:commandLink>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{item.name}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Datecreated</f:facet>
+                    <h:outputText value="#{item.dateCreated}">
+                        <f:convertDateTime />
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">uuid</f:facet>
+                    <h:outputText value="#{item.uuid}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Version</f:facet>
+                    <h:outputText value="#{item.objectVersion}"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>

@@ -25,6 +25,10 @@ public class ScheduleItem extends AbstractEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "sched_id")
     private Schedule schedule;
+    
+    
+    @ManyToOne
+    private Viewport viewport;
     private boolean active;
     
 
@@ -57,4 +61,15 @@ public class ScheduleItem extends AbstractEntity implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public Viewport getViewport() {
+        return viewport;
+    }
+
+    public void setViewport(Viewport viewport) {
+        this.viewport = viewport;
+    }
+    
+    
+    
 }

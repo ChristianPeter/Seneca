@@ -3,22 +3,21 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html" 
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="templates/template.xhtml"
+                template="/view/templates/template.xhtml"
                 xmlns:f="http://java.sun.com/jsf/core">
 
 
-    <ui:param name="pageTitle" value="Home"/>
+    <ui:param name="pageTitle" value="New Schedule"/>
 
     <ui:define name="content">
 
-        Home ... welcome
         <h:form>
-            <h:commandLink value="goto schedules" action="schedule/show?faces-redirect=true"/>
+            <h:inputText value="#{scheduleManager.selectedEntry.name}"/>
+            
+            <h:commandButton value="save" action="#{scheduleManager.save()}"/>
+            <h:commandButton value="cancel" action="#{scheduleManager.cancel()}"/>
             
         </h:form>
         
-        
     </ui:define>
-
 </ui:composition>
-
