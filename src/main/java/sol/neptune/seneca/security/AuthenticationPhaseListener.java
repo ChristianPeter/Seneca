@@ -45,7 +45,7 @@ public class AuthenticationPhaseListener implements PhaseListener {
 
     private boolean userExists(FacesContext context) {
         ExternalContext extContext = context.getExternalContext();
-        return (extContext.getSessionMap().containsKey(Authenticator.USER_SESSION_KEY));
+        return (extContext.getSessionMap().containsKey("user"));
     }
 
     private boolean requestingSecureView(FacesContext context) {

@@ -6,9 +6,11 @@ package sol.neptune.seneca.security;
 
 import java.io.Serializable;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import sol.neptune.seneca.controller.UserAccountFacade;
 import sol.neptune.seneca.entities.UserAccount;
@@ -17,16 +19,20 @@ import sol.neptune.seneca.entities.UserAccount;
  *
  * @author murdoc
  */
-@ManagedBean(name = "authenticator")
+@Named("authenticator")
 @RequestScoped
 public class Authenticator implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    public static final String USER_SESSION_KEY = "user";
+    
     @EJB
     private UserAccountFacade userAccountFacade;
     private String username;
     private String password;
+    
+    @Inject
+    private Conversation conversation;
+    
 
     public String login() {
 
@@ -39,7 +45,7 @@ public class Authenticator implements Serializable {
             }
             if (user.getPassword().equals(password)) {
                 FacesContext context = FacesContext.getCurrentInstance();
-                context.getExternalContext().getSessionMap().put(USER_SESSION_KEY, user.getId());
+                context.getExternalContext().getSessionMap().put("user", user.getId());
                 return "/view/home?faces-redirect=true";
             }
         }
@@ -49,6 +55,9 @@ public class Authenticator implements Serializable {
     }
 
     public String logout() {
+        if (!conversation.isTransient()){
+            conversation.end();
+        }
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         if (session != null) {
             session.invalidate();
