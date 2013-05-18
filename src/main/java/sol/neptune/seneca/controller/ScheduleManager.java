@@ -103,6 +103,14 @@ public class ScheduleManager implements Serializable {
         }
         return "show?faces-redirect=true";
     }
+    
+    public String delete(){
+        setSelectedEntry(datamodel.getRowData());
+        scheduleFacade.remove(selectedEntry);
+        selectedEntry = null;
+        init();
+        return "";
+    }
     /* getter & setter */
 
     public Schedule getSelectedEntry() {

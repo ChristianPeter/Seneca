@@ -10,14 +10,20 @@
     <ui:param name="pageTitle" value="Home"/>
 
     <ui:define name="content">
-
-        Home ... welcome
         <h:form>
-            <h:commandLink value="goto schedules" action="schedule/show?faces-redirect=true"/>
-            
+            <div class="hero-unit">
+                <h1>Heading</h1>
+                <p>Tagline</p>
+                <p>
+                    <h:commandLink value="goto schedules" styleClass="btn btn-primary btn-large" action="schedule/show?faces-redirect=true"/>
+
+                </p>
+            </div>
+
+
         </h:form>
-        
-        
+
+
     </ui:define>
 
 </ui:composition>

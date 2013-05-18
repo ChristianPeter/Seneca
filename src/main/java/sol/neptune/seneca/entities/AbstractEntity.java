@@ -39,9 +39,6 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     private String uuid;
 
     public String getUuid() {
-        if (uuid == null){
-            uuid = UUID.randomUUID().toString();
-        }
         return uuid;
     }
 
@@ -128,6 +125,8 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     @PrePersist
     public void initDateCreated(){
         setDateCreated(new Date());
+        setLastModified(new Date());
+        setUuid(UUID.randomUUID().toString());
     }
     
     @PreUpdate

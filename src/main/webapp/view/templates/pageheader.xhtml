@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:component xmlns="http://www.w3.org/1999/xhtml"
-              xmlns:ui="http://java.sun.com/jsf/facelets">
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html">
 
 
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -15,7 +16,8 @@
                 <a class="brand" href="#">Seneca</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="./faces/view/home.xhtml">Home</a></li>
+                        <li><a href="./faces/view/schedule/show.xhtml">Schedules</a></li>
                         <li><a href="#about">About</a></li>
                         <li><a href="#contact">Contact</a></li>
                         <li class="dropdown">
@@ -32,11 +34,16 @@
                         </li>
                     </ul>
 
-                    <form class="navbar-form pull-right">
-                        <input class="span2" placeholder="Email" type="text"/>
-                        <input class="span2" placeholder="Password" type="password"/>
-                        <button type="submit" class="btn">Sign in</button>
-                    </form>
+                    <!--                    <form class="navbar-form pull-right">
+                                            <input class="span2" placeholder="Email" type="text"/>
+                                            <input class="span2" placeholder="Password" type="password"/>
+                                            <button type="submit" class="btn">Sign in</button>
+                                        </form>-->
+                    <h:form styleClass="navbar-form pull-right">
+                        <h:commandLink value="Logout" styleClass="btn" title="Logout" action="#{authenticator.logout()}">
+                            <i class="icon-off"></i>
+                        </h:commandLink>
+                    </h:form>
                 </div><!--/.nav-collapse -->
             </div>
         </div>
