@@ -4,20 +4,18 @@
  */
 package sol.neptune.seneca.security;
 
-import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import sol.neptune.seneca.controller.DocumentFacade;
 import sol.neptune.seneca.controller.PresentationFacade;
-import sol.neptune.seneca.controller.ScheduleFacade;
-import sol.neptune.seneca.controller.ScheduleItemFacade;
 import sol.neptune.seneca.controller.UserAccountFacade;
+import sol.neptune.seneca.entities.Document;
 import sol.neptune.seneca.entities.Presentation;
-import sol.neptune.seneca.entities.Schedule;
-import sol.neptune.seneca.entities.ScheduleItem;
+import sol.neptune.seneca.entities.PresentationItem;
 import sol.neptune.seneca.entities.UserAccount;
 
 /**
@@ -26,58 +24,28 @@ import sol.neptune.seneca.entities.UserAccount;
  */
 @Singleton
 @Startup
-public class InstallationManager  {
+public class InstallationManager {
 
-    @EJB 
+    @EJB
     private UserAccountFacade userAccountFacade;
-
-    @EJB
-    private ScheduleFacade scheduleFacade;
-    
-    @EJB
-    private ScheduleItemFacade scheduleItemFacade;
-    
     @EJB
     private PresentationFacade presentationFacade;
-    
+    @EJB
+    private DocumentFacade documentFacade;
+
     @PostConstruct
     public void test() {
-       createAdmin();
-       createSchedule();
+        createAdmin();
+        createPresentation();
     }
-    
-    public void createSchedule(){
-        Schedule schedule = new Schedule();
-        schedule.setActive(true);
-        schedule.setDescription("demo schedule");
-        schedule.setName("default");
-        
-        ScheduleItem item = new ScheduleItem();
-        item.setActive(true);
-        item.setSchedule(schedule);
-        
-        Presentation pres = new Presentation();
-        pres.setName("my presentation");
-        pres.setDescription("lorem ipsum");
-        item.setPresentation(pres);
-        
-        scheduleItemFacade.create(item);
-        
-        
-        presentationFacade.create(pres);
-        scheduleFacade.create(schedule);
-        
-        
-        
-        
-    }
-    public void createAdmin(){
-         Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "searching for admin user");
+
+    public void createAdmin() {
+        Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "searching for admin user");
         UserAccount admin = userAccountFacade.findByUsername("admin");
 //       UserAccount admin = null;
-        
-        if (admin == null){
-            
+
+        if (admin == null) {
+
             Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "no admin. creating one.");
             admin = new UserAccount();
             admin.setUserName("admin");
@@ -86,7 +54,28 @@ public class InstallationManager  {
             admin.setGivenName("Friendly");
             userAccountFacade.create(admin);
         }
-        
-        Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "admin user: {0}",admin);
+
+        Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "admin user: {0}", admin);
+    }
+
+    private void createPresentation() {
+        Presentation p = new Presentation();
+        p.setName("Demo presentation");
+        p.setDescription("this is some kind of demo.");
+
+        Document d = new Document();
+
+        PresentationItem i = new PresentationItem();
+        i.setDuration(10);
+        i.setPresentation(p);
+        p.getPresentationItems().add(i);
+        i.setDocument(d);
+        d.getPresentationItems().add(i);
+
+
+        presentationFacade.create(p);
+
+
+
     }
 }

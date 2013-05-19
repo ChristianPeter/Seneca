@@ -5,8 +5,11 @@
 package sol.neptune.seneca.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,15 +20,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "viewport")
 public class Viewport extends AbstractEntity implements Serializable {
+    @ManyToMany(mappedBy = "viewports")
+    private Set<Presentation> presentations = new HashSet<Presentation>();
     
     
     private static final long serialVersionUID = 1L;
 
     private String name;
     
-    @OneToMany(mappedBy = "viewport")
-    private List<ScheduleItem> scheduleItems;
-
+  
     /* getter & setter */
    
 
@@ -37,15 +40,6 @@ public class Viewport extends AbstractEntity implements Serializable {
         this.name = name;
     }
 
-    public List<ScheduleItem> getScheduleItems() {
-        return scheduleItems;
-    }
-
-    public void setScheduleItems(List<ScheduleItem> scheduleItems) {
-        this.scheduleItems = scheduleItems;
-    }
-    
-    
     
     
 }

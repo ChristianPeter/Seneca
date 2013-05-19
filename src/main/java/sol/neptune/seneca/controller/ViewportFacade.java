@@ -7,14 +7,14 @@ package sol.neptune.seneca.controller;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import sol.neptune.seneca.entities.Schedule;
+import sol.neptune.seneca.entities.Viewport;
 
 /**
  *
  * @author murdoc
  */
 @Stateless
-public class ScheduleFacade extends AbstractFacade<Schedule> {
+public class ViewportFacade extends AbstractFacade<Viewport> {
     @PersistenceContext(unitName = "sol.neptune_Seneca_PU")
     private EntityManager em;
 
@@ -23,8 +23,8 @@ public class ScheduleFacade extends AbstractFacade<Schedule> {
         return em;
     }
 
-    public ScheduleFacade() {
-        super(Schedule.class);
+    public ViewportFacade() {
+        super(Viewport.class);
     }
     
 }

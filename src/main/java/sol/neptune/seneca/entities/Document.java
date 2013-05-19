@@ -25,7 +25,7 @@ public class Document extends AbstractEntity implements Serializable {
     @Lob
     private byte[] imageData;
     
-    @OneToMany(mappedBy = "document",  cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "document",  cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<PresentationItem> presentationItems = new HashSet<PresentationItem>();
 
     
