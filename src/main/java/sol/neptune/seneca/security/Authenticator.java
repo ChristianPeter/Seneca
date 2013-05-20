@@ -4,7 +4,9 @@
  */
 package sol.neptune.seneca.security;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.RequestScoped;
@@ -34,7 +36,7 @@ public class Authenticator implements Serializable {
     private Conversation conversation;
     
 
-    public String login() {
+    public String login() throws IOException, NoSuchAlgorithmException {
 
 
         if (username != null) {
@@ -43,7 +45,7 @@ public class Authenticator implements Serializable {
                 // no user found!
                 return "";
             }
-            if (user.getPassword().equals(password)) {
+            if (user.getPassword().equals(EncryptionUtils.encryptPassword(password, user.getUuid()))) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.getExternalContext().getSessionMap().put("user", user.getId());
                 return "/view/home?faces-redirect=true";

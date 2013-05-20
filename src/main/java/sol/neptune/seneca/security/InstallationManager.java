@@ -4,6 +4,8 @@
  */
 package sol.neptune.seneca.security;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -34,22 +36,27 @@ public class InstallationManager {
     private DocumentFacade documentFacade;
 
     @PostConstruct
-    public void test() {
-        createAdmin();
-        createPresentation();
+    public void installation() {
+        try {
+            createAdmin();
+            createPresentation();
+        } catch (IOException ex) {
+            Logger.getLogger(InstallationManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(InstallationManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void createAdmin() {
+    public void createAdmin() throws IOException, NoSuchAlgorithmException {
         Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "searching for admin user");
         UserAccount admin = userAccountFacade.findByUsername("admin");
-//       UserAccount admin = null;
 
         if (admin == null) {
 
             Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "no admin. creating one.");
             admin = new UserAccount();
             admin.setUserName("admin");
-            admin.setPassword("batman!");
+            admin.setPassword(EncryptionUtils.encryptPassword("batman!",admin.getUuid()));
             admin.setFamilyName("Sysop");
             admin.setGivenName("Friendly");
             userAccountFacade.create(admin);

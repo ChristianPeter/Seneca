@@ -35,17 +35,18 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     public void setId(Long id) {
         this.id = id;
     }
-
     private String uuid;
 
     public String getUuid() {
+        if (this.uuid == null) {
+            setUuid(UUID.randomUUID().toString());
+        }
         return uuid;
     }
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-    
     @Version
     private Integer objectVersion;
 
@@ -56,8 +57,6 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     public void setObjectVersion(Integer objectVersion) {
         this.objectVersion = objectVersion;
     }
-    
-    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateCreated;
 
@@ -68,7 +67,6 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
-    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date lastModified;
 
@@ -79,10 +77,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
-    
-    
-    
-    
+
     @Override
     public boolean isNew() {
         return (this.id == null);
@@ -115,22 +110,23 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
         }
         return true;
     }
-    
-    
+
     @Override
     public String toString() {
-        return "Entity: " + this.getClass().getName()+ "[ id=" + getId() + " ]";
+        return "Entity: " + this.getClass().getName() + "[ id=" + getId() + " ]";
     }
-    
+
     @PrePersist
-    public void initDateCreated(){
+    public void initDateCreated() {
         setDateCreated(new Date());
         setLastModified(new Date());
-        setUuid(UUID.randomUUID().toString());
+        if (getUuid() == null) {
+            setUuid(UUID.randomUUID().toString());
+        }
     }
-    
+
     @PreUpdate
-    public void updateLastModified(){
+    public void updateLastModified() {
         setLastModified(new Date());
     }
 }
