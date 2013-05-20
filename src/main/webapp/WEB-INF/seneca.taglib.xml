@@ -6,7 +6,7 @@
         http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
     version="2.0">
 
-    <namespace>http://so.neptune.seneca/jsf/html</namespace>
+    <namespace>http://seneca.neptune.sol/jsf/html</namespace>
     <tag>
         <tag-name>inputText</tag-name>
         <component>

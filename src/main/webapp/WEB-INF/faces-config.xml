@@ -12,4 +12,18 @@
             sol.neptune.seneca.security.AuthenticationPhaseListener
         </phase-listener>
     </lifecycle>
+    
+    <application>
+        <locale-config>
+            <default-locale>de</default-locale>
+            <supported-locale>en</supported-locale>
+            <supported-locale>de</supported-locale>
+        </locale-config>
+    
+        <resource-bundle>
+            <base-name>sol.neptune.seneca.lang</base-name>
+            <var>msg</var>
+        </resource-bundle>
+        
+    </application>
 </faces-config>

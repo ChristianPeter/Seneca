@@ -2,24 +2,24 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html" 
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:s="http://seneca.neptune.sol/jsf/html"
                 template="templates/template_login.xhtml">
 
     <ui:param name="pageTitle" value="Login"/>
 
     <ui:define name="content">
 
-
         <div class="container">
 
             <h:form class="form-signin">
-                <h2 class="form-signin-heading">Please login in</h2>
+                <h2 class="form-signin-heading">#{msg['login.greeter']}</h2>
 
-                <h:inputText id="username" styleClass="input-block-level" value="#{authenticator.username}"/>
+                <s:inputText id="username" placeholder="#{msg['enter.username']}" styleClass="input-block-level" value="#{authenticator.username}"/>
                 <h:inputSecret id="password" styleClass="input-block-level" value="#{authenticator.password}"/>
 
-                <label class="checkbox">
-                </label>
-                <h:commandButton styleClass="btn btn-large btn-primary" value="login" action="#{authenticator.login()}"/>
+                <!--<label class="checkbox">-->
+                <!--</label>-->
+                <h:commandButton styleClass="btn btn-large btn-primary" value="#{msg['login']}" action="#{authenticator.login()}"/>
             </h:form>
 
         </div> <!-- /container -->
