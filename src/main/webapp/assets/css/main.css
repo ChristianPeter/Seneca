@@ -1,0 +1,7 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+.navbar-form .bootstrap-select.btn-group{
+    margin-bottom: 0px;
+}

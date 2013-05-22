@@ -39,10 +39,11 @@
                                             <button type="submit" class="btn">Sign in</button>
                                         </form>-->
                     <h:form styleClass="navbar-form pull-right">
-                        <h:selectOneMenu  value="#{localeManager.language}" onchange="submit();"
+                        <h:selectOneMenu  styleClass="selectpicker" value="#{localeManager.language}" onchange="submit();"
                                           >
                             <f:selectItems value="#{localeManager.localesAsString}"/>
                         </h:selectOneMenu>
+                        
                         <h:commandLink value="Logout" styleClass="btn" title="Logout" action="#{authenticator.logout()}">
                             <i class="icon-off"></i>
                         </h:commandLink>

@@ -20,8 +20,8 @@
 
 
                     <h:form styleClass="navbar-form pull-right">
-                        <h:selectOneMenu  value="#{localeManager.language}" onchange="submit();"
-                                          >
+                        <h:selectOneMenu styleClass="selectpicker" value="#{localeManager.language}" onchange="submit();"
+                                         >
                             <f:selectItems value="#{localeManager.localesAsString}"/>
                         </h:selectOneMenu>
                     </h:form>

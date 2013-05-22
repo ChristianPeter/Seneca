@@ -4,7 +4,6 @@
  */
 package sol.neptune.seneca.i18n;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
@@ -12,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 
 /**
@@ -28,18 +26,12 @@ public class LocaleManager
     private Locale locale;
 
     public Locale getLocale() {
-        
-        System.out.println("locale1: " + locale);
         if (locale == null) {
             locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
         }
-        System.out.println("locale2: " + locale);
         if (locale == null) {
             locale = Locale.GERMAN;
         }
-        
-        
-        System.out.println("locale3: " + locale);
         return locale;
     }
 
@@ -55,9 +47,7 @@ public class LocaleManager
     }
 
     public void setLanguage(String language) {
-        System.out.println(language);
         Locale newLocale = getSupportedLocales().get(language);
-        System.out.println(newLocale);
         setLocale(newLocale);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(newLocale);
     }
