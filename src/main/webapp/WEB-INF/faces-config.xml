@@ -21,7 +21,7 @@
         </locale-config>
     
         <resource-bundle>
-            <base-name>sol.neptune.seneca.lang</base-name>
+            <base-name>sol.neptune.seneca.i18n.Text</base-name>
             <var>msg</var>
         </resource-bundle>
         
