@@ -8,7 +8,10 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,6 +25,14 @@ import javax.persistence.Table;
 public class Document extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    private String name;
+    private String filename;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(length=16)
+    private DocumentType documentType = DocumentType.PICTURE;
+    
     @Lob
     private byte[] imageData;
     
@@ -45,6 +56,33 @@ public class Document extends AbstractEntity implements Serializable {
     public void setPresentationItems(Set<PresentationItem> presentationItems) {
         this.presentationItems = presentationItems;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+    
+    
+    
     
     
 }

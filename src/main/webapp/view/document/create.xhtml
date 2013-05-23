@@ -12,7 +12,7 @@
     <ui:define name="content">
 
         <h:form>
-            <h:outputText value="#{documentManager.current.presentationItems}"/>
+            <h:outputText value="#{documentManager.current}"/>
             
             <h:commandButton value="save" action="#{documentManager.save()}"/>
             <h:commandButton value="cancel" action="#{documentManager.cancel()}"/>

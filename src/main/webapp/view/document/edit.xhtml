@@ -12,8 +12,11 @@
     <ui:define name="content">
 
         <h:form>
-            <h:outputText value="#{documentManager.current.presentationItems}"/>
-            
+            <h:outputText value="#{documentManager.current}"/>
+
+            <h:selectOneMenu value="#{documentManager.current.documentType}">
+                <f:selectItems var="item" itemLabel="#{msg[item]}" value="#{enumProducers.documentTypes}"/>
+            </h:selectOneMenu>
             <h:commandButton value="save" action="#{documentManager.save()}"/>
             <h:commandButton value="cancel" action="#{documentManager.cancel()}"/>
             

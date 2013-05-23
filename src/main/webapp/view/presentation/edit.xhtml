@@ -14,6 +14,26 @@
         <h:form>
             <h:inputText value="#{presentationManager.current.name}"/>
             
+            
+            
+            <h:selectManyMenu value="#{presentationManager.current.viewports}">
+                <f:selectItems value=""/>
+            </h:selectManyMenu>
+            
+            <h:dataTable id="itemsTable" styleClass="table table-striped" value="#{presentationManager.current.presentationItems}" var="item">
+                <h:column>
+                    <f:facet name="header">Duration</f:facet>
+                    #{item.duration}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Active</f:facet>
+                    #{item.active}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Document name</f:facet>
+                    #{item.document.name}
+                </h:column>
+            </h:dataTable>
             <h:commandButton value="save" action="#{presentationManager.save()}"/>
             <h:commandButton value="cancel" action="#{presentationManager.cancel()}"/>
             

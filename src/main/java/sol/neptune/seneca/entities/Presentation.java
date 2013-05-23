@@ -26,13 +26,12 @@ public class Presentation extends AbstractEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
     private String description;
-    
+    private boolean active = true;
     @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PresentationItem> presentationItems = new ArrayList<PresentationItem>();
-    
     @ManyToMany
     private Set<Viewport> viewports = new HashSet<Viewport>();
-    
+
 
     /* getter and setter */
     public String getName() {
@@ -58,7 +57,20 @@ public class Presentation extends AbstractEntity implements Serializable {
     public void setPresentationItems(List<PresentationItem> presentationItems) {
         this.presentationItems = presentationItems;
     }
-    
-    
-    
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Set<Viewport> getViewports() {
+        return viewports;
+    }
+
+    public void setViewports(Set<Viewport> viewports) {
+        this.viewports = viewports;
+    }
 }

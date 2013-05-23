@@ -29,6 +29,9 @@ public class PresentationItem extends AbstractEntity implements Serializable {
     
     private Integer duration;
     
+    private Integer position;
+    
+    private boolean active = true;
 
     /* getter and setter */
     public Presentation getPresentation() {
@@ -54,6 +57,24 @@ public class PresentationItem extends AbstractEntity implements Serializable {
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
+    
     
     
     

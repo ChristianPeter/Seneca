@@ -6,11 +6,12 @@ package sol.neptune.seneca.entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -28,6 +29,10 @@ public class Viewport extends AbstractEntity implements Serializable {
 
     private String name;
     
+    @Enumerated(EnumType.STRING)
+    @Column(length=16)
+    private ViewportConfig config = ViewportConfig.FULL;
+    
   
     /* getter & setter */
    
@@ -38,6 +43,14 @@ public class Viewport extends AbstractEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ViewportConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(ViewportConfig config) {
+        this.config = config;
     }
 
     

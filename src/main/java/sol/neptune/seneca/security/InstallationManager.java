@@ -15,10 +15,12 @@ import javax.ejb.Startup;
 import sol.neptune.seneca.controller.DocumentFacade;
 import sol.neptune.seneca.controller.PresentationFacade;
 import sol.neptune.seneca.controller.UserAccountFacade;
+import sol.neptune.seneca.controller.ViewportFacade;
 import sol.neptune.seneca.entities.Document;
 import sol.neptune.seneca.entities.Presentation;
 import sol.neptune.seneca.entities.PresentationItem;
 import sol.neptune.seneca.entities.UserAccount;
+import sol.neptune.seneca.entities.Viewport;
 
 /**
  *
@@ -35,11 +37,17 @@ public class InstallationManager {
     @EJB
     private DocumentFacade documentFacade;
 
+    @EJB
+    private ViewportFacade viewportFacade;
+    
     @PostConstruct
     public void installation() {
         try {
             createAdmin();
+            
+            createViewports();
             createPresentation();
+            
         } catch (IOException ex) {
             Logger.getLogger(InstallationManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
@@ -80,9 +88,18 @@ public class InstallationManager {
         d.getPresentationItems().add(i);
 
 
+        Viewport vp = viewportFacade.findAll().get(0);
+        p.getViewports().add(vp);
         presentationFacade.create(p);
 
 
 
+    }
+
+    private void createViewports() {
+        Viewport vp = new Viewport();
+        vp.setName("Projector One (Lobby)");
+        
+        viewportFacade.create(vp);
     }
 }
