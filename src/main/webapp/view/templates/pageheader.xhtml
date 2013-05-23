@@ -3,7 +3,8 @@
 <ui:component xmlns="http://www.w3.org/1999/xhtml"
               xmlns:ui="http://java.sun.com/jsf/facelets"
               xmlns:h="http://java.sun.com/jsf/html"
-              xmlns:f="http://java.sun.com/jsf/core">
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:p="http://primefaces.org/ui">
 
 
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -38,7 +39,10 @@
                                             <input class="span2" placeholder="Password" type="password"/>
                                             <button type="submit" class="btn">Sign in</button>
                                         </form>-->
-                    <h:form styleClass="navbar-form pull-right">
+                                        
+
+                    <h:form id="headerForm" styleClass="navbar-form pull-right">
+                        <p:growl id="messages"></p:growl>
                         <h:selectOneMenu  styleClass="selectpicker" value="#{localeManager.language}" onchange="submit();"
                                           >
                             <f:selectItems value="#{localeManager.localesAsString}"/>
