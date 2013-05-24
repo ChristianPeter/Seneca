@@ -9,3 +9,8 @@ body {
 .navbar-fixed-top{
     z-index: 100;
 }
+
+/* to fix primefaces fileupload button alignment */
+.fileupload-buttonbar .ui-button{
+    vertical-align: top;
+}

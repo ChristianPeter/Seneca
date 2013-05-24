@@ -12,23 +12,39 @@
 
     <ui:define name="content">
 
-        <h:form>
-            <h:outputText value="#{documentManager.current}"/>
+        <h:form styleClass="form-horizontal" id="cf">
+            <fieldset>
+                <legend>Legend</legend>
+                <div class="control-group">
+                    <label class="control-label" for="cf:docname">#{msg['document.name']}</label>
+                    <div class="controls">
+                        <h:inputText value="#{documentManager.current.name}" id="docname"/>
+                    </div>
+                </div>
 
-            <h:selectOneMenu value="#{documentManager.current.documentType}">
-                <f:selectItems var="item" itemLabel="#{msg[item]}" value="#{enumProducers.documentTypes}"/>
-            </h:selectOneMenu>
-            
-            
-            <p:fileUpload></p:fileUpload>
-            
-            
-            <p:commandButton value="growl" action="#{documentManager.testGrowl()}" update=":headerForm:messages"/>
-            
-            <h:commandButton value="save" action="#{documentManager.save()}"/>
-            <h:commandButton value="cancel" action="#{documentManager.cancel()}"/>
-            
+                <div class="control-group">
+                    <label class="control-label" for="cf:doctype">#{msg['document.type']}</label>
+                    <div class="controls">
+                        <h:selectOneMenu value="#{documentManager.current.documentType}" id="doctype">
+                            <f:selectItems var="item" itemLabel="#{msg[item]}" value="#{enumProducers.documentTypes}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+
+                <div class="form-actions">
+                    <h:commandLink value="save" action="#{documentManager.save()}" styleClass="btn btn-primary"/>
+                    <h:commandLink value="cancel" action="#{documentManager.cancel()}" styleClass="btn"/>
+                </div>
+
+            </fieldset>
+
+            <p:fileUpload mode="simple"></p:fileUpload>
+
+
+
+
         </h:form>
-        
+
     </ui:define>
 </ui:composition>
