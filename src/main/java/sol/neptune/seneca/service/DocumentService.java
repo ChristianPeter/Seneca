@@ -17,6 +17,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import sol.neptune.seneca.controller.DocumentFacade;
 import sol.neptune.seneca.entities.Document;
@@ -107,4 +108,30 @@ public class DocumentService implements Serializable {
 
         return dw;
     }
+    
+    
+    /* as path param */
+    
+    @PUT
+    @Path("{filename}")
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    @Produces({MediaType.APPLICATION_JSON})
+    public String uploadFile(File file, @PathParam("filename") String filename){
+        System.out.println(file);
+        System.out.println(filename);
+        return "";
+    }
+    
+    /* as query param */
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    @Produces({MediaType.APPLICATION_JSON})
+    public String uploadFileQP(File file, @QueryParam("filename") String filename){
+        System.out.println(file);
+        System.out.println(filename);
+        return "";
+    }
+    
+    
 }

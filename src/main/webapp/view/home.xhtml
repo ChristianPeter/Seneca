@@ -42,8 +42,48 @@
             <button onclick="uploadTest()">upload</button>
             
             <button onclick="multiuploadTest('mfiles')">multiupload</button>
+            
+            
+            <br />
+            
+            yet another approach
+            <input type="file" name="filex" id="filex" />
+            <button onclick="uploadPathParam('filex')">uploadPathParam</button>
+            <button onclick="uploadQueryParam('filex')">uploadQueryParam</button>
+            
             <script>
                //<![CDATA[
+               
+               
+               function uploadPathParam(id){
+                   var file = document.getElementById(id).files[0];
+                   
+                   var filename = escape(file.name);
+                    $.ajax({
+                            url: "/Seneca/webresources/api/document/"+filename,
+                            type: "PUT",
+                            data: file,
+                            processData: false,
+                            contentType : "application/octet-stream"
+                        });
+                   
+               }
+               
+                function uploadQueryParam(id){
+                   var file = document.getElementById(id).files[0];
+                   
+                   var filename = escape(file.name);
+                    $.ajax({
+                            url: "/Seneca/webresources/api/document?filename="+filename,
+                            type: "PUT",
+                            data: file,
+                            processData: false,
+                            contentType : "application/octet-stream"
+                        });
+                   
+               }
+               
+               
                 function uploadTest() {
                     var file = document.getElementById('file').files[0];
 
