@@ -17,15 +17,100 @@
                 <p>Tagline</p>
                 <p>
                     <h:commandLink value="goto documents" styleClass="btn btn-primary btn-large" action="document/show?faces-redirect=true"/>
-#{msg['user.created']}
+                    #{msg['user.created']}
                 </p>
             </div>
 
             <s:inputText placeholder="helloworld" value="test"></s:inputText>
-            
+
             #{documentManager.current}
             #{documentManager.list}
+
+
+
+
         </h:form>
+
+
+        <!--<h:form enctype="multipart/form-data" id="testform">-->
+
+            <input type="file" name="file" id="file" />
+            
+            <input type="file" name="mfiles" id="mfiles" multiple="multiple"/>
+
+
+            <button onclick="uploadTest()">upload</button>
+            
+            <button onclick="multiuploadTest('mfiles')">multiupload</button>
+            <script>
+               //<![CDATA[
+                function uploadTest() {
+                    var file = document.getElementById('file').files[0];
+
+                    $.ajax({
+                        url: "/Seneca/webresources/api/document",
+                        type: "POST",
+                        data: file,
+                        processData: false,
+                        contentType : "application/octet-stream"
+                    });
+                    
+                }
+                
+                function multiuploadTest(id) {
+                    var files = document.getElementById(id).files;
+                    
+                    for (var i = 0; i < files.length; i++){
+                        console.log(files[i]);
+                    }
+                    
+                    uploadFiles(files, function(){console.log('done.');}, function(){});
+                }
+                
+                function uploadFiles2(files, successCB, errorCB, currentIndex){
+                    if (!files) return errorCB(); // if no files given
+                    if (!currentIndex) currentIndex = 0; // init the index if not given
+                    if (files.length === currentIndex) return successCB();
+                    
+                    var file = files[currentIndex];
+                    
+                    $.ajax({
+                        url: "/Seneca/webresources/api/document",
+                        type: "PUT",
+                        data: file,
+                        processData: false,
+                        contentType : "application/octet-stream"
+                    }).success(function(){uploadFiles(files, successCB, errorCB, currentIndex+1)});
+                    
+                }
+
+
+                function uploadFiles(files, successCB, errorCB, currentIndex){
+                    if (!files) return errorCB(); // if no files given
+                    if (!currentIndex) currentIndex = 0; // init the index if not given
+                    if (files.length === currentIndex) return successCB();
+                    
+                    var file = files[currentIndex];
+                    $.ajax({
+                        url: "/Seneca/webresources/api/document",
+                        type: "POST",
+                        data: {filename : 'test', filesize : 0}
+                    }).success(function(data){
+                      console.log(data);  
+                        $.ajax({
+                            url: "/Seneca/webresources/api/document/"+data.uploadToId+"/"+data.token,
+                            type: "PUT",
+                            data: file,
+                            processData: false,
+                            contentType : "application/octet-stream"
+                        }).success(function(){uploadFiles(files, successCB, errorCB, currentIndex+1)});
+
+                    });
+                }
+                
+                //]]>
+            </script>
+        <!--</h:form>-->
 
 
     </ui:define>
