@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
@@ -96,6 +97,18 @@ public class DocumentService implements Serializable {
 
 
         documentFacade.create(d);
+        try {
+            List<Document> converted = PowerPointConverter.convertPPTX(d.getImageData());
+            
+            for (Document dd: converted){
+                documentFacade.create(dd);
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(DocumentService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         return Response.ok().build();
     }
 
