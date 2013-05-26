@@ -98,8 +98,12 @@ public class DocumentService implements Serializable {
 
         documentFacade.create(d);
         try {
-            List<Document> converted = PowerPointConverter.convertPPTX(d.getImageData());
+            /*List<Document> converted = DocumentConverter.convertPPTX(d.getImageData());
             
+            for (Document dd: converted){
+                documentFacade.create(dd);
+            }*/
+            List<Document> converted = DocumentConverter.convertPDF(d.getImageData());
             for (Document dd: converted){
                 documentFacade.create(dd);
             }
