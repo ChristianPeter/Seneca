@@ -33,5 +33,3 @@ creates a whole presentation with presentationitems and documents for an uploade
 
 
 -websocket / publish feature to tell the clients to update their view-programme.
-
-TEST
