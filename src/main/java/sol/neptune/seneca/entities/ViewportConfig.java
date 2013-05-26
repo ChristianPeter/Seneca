@@ -20,6 +20,10 @@ public enum ViewportConfig {
     private ViewportConfig(int numberOfPresentations) {
         this.numberOfPresentations = numberOfPresentations;
     }
+
+    public int getNumberOfPresentations() {
+        return numberOfPresentations;
+    }
     
     
 }

@@ -9,9 +9,19 @@ package sol.neptune.seneca.entities;
  * @author murdoc
  */
 public enum DocumentType {
-    PDF,
-    TEXT,
-    PICTURE,
-    PPT,
-    VPLAN
+
+    PDF("application/pdf"),
+    TEXT("text/plain"),
+    PICTURE("image/jpeg"),
+    PPT("application/powerpoint"),
+    VPLAN("NA");
+    private String contentType;
+
+    private DocumentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
 }
