@@ -25,3 +25,12 @@ handle multiple viewers.
 user management
 (not sure if I should use something like openid, oauth2, securesocial?)
 
+
+
+TODO:
+-powerpoint to presentation converter:
+creates a whole presentation with presentationitems and documents for an uploaded ppt(x) file. This will initially not be enabled (or no viewport is set).
+
+
+-websocket / publish feature to tell the clients to update their view-programme.
+
