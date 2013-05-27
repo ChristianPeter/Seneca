@@ -14,3 +14,8 @@ body {
 .fileupload-buttonbar .ui-button{
     vertical-align: top;
 }
+
+.ui-tree {
+    width: 100%;
+    height: 400px;
+}

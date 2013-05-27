@@ -4,12 +4,43 @@
                 xmlns:h="http://java.sun.com/jsf/html" 
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/view/templates/template.xhtml"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
 
 
     <ui:param name="pageTitle" value="Presentation List"/>
 
     <ui:define name="content">
+
+
+        <h:form id="mainform" styleClass="form-horizontal">
+            <div class="row">
+                <div class="span4">
+                    <p:tree id="tree" value="#{presentationManager.root}" var="node" selection="#{presentationManager.selectedNode}" selectionMode="single">
+                        <p:treeNode type="p">#{node.name}</p:treeNode>
+                        <p:treeNode type="i">##{node.position} #{node.document}</p:treeNode>
+
+                        <p:ajax event="select" listener="#{presentationManager.onNodeSelect}" update=":mainform:detailpanel"/>
+                    </p:tree>
+                </div>
+
+                <div class="span6">
+                    <h:panelGroup id="detailpanel">
+                        <fieldset>
+                            <legend>Presentation:</legend>
+                            
+                            #{presentationManager.selectedPresentation}
+                            ---
+                            #{presentationManager.selectedPresentationItem}
+
+                        </fieldset>
+                    </h:panelGroup>
+                </div>
+            </div>
+
+        </h:form>
+
+
 
         <h:form>
 
@@ -25,10 +56,10 @@
                         <i class="icon-remove"></i>
                     </h:commandLink>
                 </h:column>
-<!--                <h:column>
-                    <f:facet name="header">Name</f:facet>
-                    <h:outputText value="#{item.name}"/>
-                </h:column>-->
+                <!--                <h:column>
+                                    <f:facet name="header">Name</f:facet>
+                                    <h:outputText value="#{item.name}"/>
+                                </h:column>-->
                 <h:column>
                     <f:facet name="header">Datecreated</f:facet>
                     <h:outputText value="#{item.dateCreated}">

@@ -15,8 +15,12 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import sol.neptune.seneca.controller.PresentationFacade;
 import sol.neptune.seneca.entities.Presentation;
+import sol.neptune.seneca.entities.PresentationItem;
 
 /**
  *
@@ -36,6 +40,14 @@ public class PresentationManager implements Serializable {
     private List<Presentation> list;
     private DataModel<Presentation> model;
     private Presentation current;
+    
+    
+    private TreeNode root = null;
+    private TreeNode selectedNode;
+    
+    
+    private Presentation selectedPresentation;
+    private PresentationItem selectedPresentationItem;
     
     @PostConstruct
     public void construct() {
@@ -60,6 +72,16 @@ public class PresentationManager implements Serializable {
     public void init() {
         setList(facade.findAll());
         model = new ListDataModel<Presentation>(getList());
+        
+        root = new DefaultTreeNode();
+        for (Presentation p : getList()){
+            TreeNode pnode = new DefaultTreeNode("p",p,root);
+            // level for p-items:
+            for (PresentationItem pi : p.getPresentationItems()){
+                TreeNode pinode = new DefaultTreeNode("i", pi, pnode);
+            }
+        }
+        
     }
 
     public String create() {
@@ -101,6 +123,27 @@ public class PresentationManager implements Serializable {
         return "";
     }
 
+    
+    /* event listener */
+    
+    public void onNodeSelect(NodeSelectEvent event){
+        // unselect:
+        setSelectedPresentation(null);
+        setSelectedPresentationItem(null);
+        Object source = event.getTreeNode().getData();
+
+        // select new one
+        if (source instanceof Presentation){
+            setSelectedPresentation((Presentation) source);
+            
+        }
+        else if (source instanceof PresentationItem){
+            setSelectedPresentationItem((PresentationItem) source);
+        }
+    }
+    
+    /* getter & setter */
+    
     public List<Presentation> getList() {
         return list;
     }
@@ -124,6 +167,40 @@ public class PresentationManager implements Serializable {
     public void setCurrent(Presentation current) {
         this.current = current;
     }
+
+    public TreeNode getRoot() {
+        return root;
+    }
+
+    public void setRoot(TreeNode root) {
+        this.root = root;
+    }
+
+    public TreeNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+
+    public Presentation getSelectedPresentation() {
+        return selectedPresentation;
+    }
+
+    public void setSelectedPresentation(Presentation selectedPresentation) {
+        this.selectedPresentation = selectedPresentation;
+    }
+
+    public PresentationItem getSelectedPresentationItem() {
+        return selectedPresentationItem;
+    }
+
+    public void setSelectedPresentationItem(PresentationItem selectedPresentationItem) {
+        this.selectedPresentationItem = selectedPresentationItem;
+    }
+    
+    
     
     
     
