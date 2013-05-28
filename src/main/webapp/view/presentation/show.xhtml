@@ -13,7 +13,9 @@
     <ui:define name="content">
 
 
-        <h:form id="mainform" styleClass="form-horizontal">
+        <h:form id="mainform" styleClass="form-horizontal" onsubmit="return false;">
+            
+           
             <div class="row">
                 <div class="span4">
                     <p:tree id="tree" value="#{presentationManager.root}" var="node" selection="#{presentationManager.selectedNode}" selectionMode="single">
@@ -26,14 +28,36 @@
 
                 <div class="span6">
                     <h:panelGroup id="detailpanel">
-                        <fieldset>
-                            <legend>Presentation:</legend>
-                            
-                            #{presentationManager.selectedPresentation}
-                            ---
-                            #{presentationManager.selectedPresentationItem}
+                        <h:panelGroup id="isPresenation" rendered="#{not empty presentationManager.selectedPresentation}">
 
-                        </fieldset>
+                            <fieldset>
+                                <legend>Presentation:</legend>
+
+                                #{presentationManager.selectedPresentation}
+
+                            </fieldset>
+
+                        </h:panelGroup>
+                        
+                        <h:panelGroup id="isPresItem" rendered="#{not empty presentationManager.selectedPresentationItem}">
+
+                            <fieldset>
+                                <legend>Presentation-Item:</legend>
+
+                                #{presentationManager.selectedPresentationItem}
+                                <h:inputText value="#{presentationManager.selectedPresentationItem.duration}">
+                                    <f:ajax event="change"/>
+                                </h:inputText>
+                                
+                                
+                                
+                                <h:commandButton styleClass="btn" >
+                                    <i class="icon-edit"></i>
+                                    <f:ajax onevent="click" listener="#{presentationManager.savePresentationItem}"/>
+                                </h:commandButton>
+                            </fieldset>
+
+                        </h:panelGroup>
                     </h:panelGroup>
                 </div>
             </div>

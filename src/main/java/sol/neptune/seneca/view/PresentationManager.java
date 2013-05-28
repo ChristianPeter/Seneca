@@ -11,6 +11,7 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
@@ -140,6 +141,11 @@ public class PresentationManager implements Serializable {
         else if (source instanceof PresentationItem){
             setSelectedPresentationItem((PresentationItem) source);
         }
+    }
+    
+    public void savePresentationItem(ActionEvent event){
+        System.out.println(event);
+        
     }
     
     /* getter & setter */
