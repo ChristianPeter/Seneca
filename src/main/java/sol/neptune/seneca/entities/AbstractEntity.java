@@ -94,7 +94,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (getId() != null ? getId().hashCode() : 0);
+        hash += (getUuid()!= null ? getUuid().hashCode() : 0);
         return hash;
     }
 
@@ -105,7 +105,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
             return false;
         }
         AbstractEntity other = (AbstractEntity) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
+        if ((this.getUuid() == null && other.getUuid() != null) || (this.getUuid() != null && !this.getUuid().equals(other.getUuid()))) {
             return false;
         }
         return true;
@@ -113,7 +113,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long> {
 
     @Override
     public String toString() {
-        return "Entity: " + this.getClass().getName() + "[ id=" + getId() + " ]";
+        return "Entity: " + this.getClass().getName() + "[ id=" + getId() + " ] uuid: "+ getUuid();
     }
 
     @PrePersist

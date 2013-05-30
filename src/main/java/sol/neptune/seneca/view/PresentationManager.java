@@ -41,7 +41,6 @@ public class PresentationManager implements Serializable {
     private PresentationFacade facade;
     @EJB
     private PresentationItemFacade piFacade;
-    
     private List<Presentation> list;
     private DataModel<Presentation> model;
     private Presentation current;
@@ -50,7 +49,6 @@ public class PresentationManager implements Serializable {
     private Presentation selectedPresentation;
     private PresentationItem selectedPresentationItem;
 
-    
     @PostConstruct
     public void construct() {
         init();
@@ -70,14 +68,7 @@ public class PresentationManager implements Serializable {
         setList(facade.findAll());
         //model = new ListDataModel<Presentation>(getList());
 
-        root = new DefaultTreeNode();
-        for (Presentation p : getList()) {
-            TreeNode pnode = new DefaultTreeNode("p", p, root);
-            // level for p-items:
-            for (PresentationItem pi : p.getPresentationItems()) {
-                TreeNode pinode = new DefaultTreeNode("i", pi, pnode);
-            }
-        }
+        rebuildTree();
 
     }
 
@@ -121,15 +112,13 @@ public class PresentationManager implements Serializable {
     }
 
     /* event listener */
-    
-    
-    public void startConversation(){
+    public void startConversation() {
         // nothing to do here since we have @PostConstruct doing our work
         if (conversation.isTransient()) {
             conversation.begin();
         }
     }
-    
+
     public void onNodeSelect(NodeSelectEvent event) {
         // unselect:
         setSelectedPresentation(null);
@@ -144,63 +133,115 @@ public class PresentationManager implements Serializable {
             setSelectedPresentationItem((PresentationItem) source);
         }
     }
-    
-    public void onNodeExpand(NodeExpandEvent event){
+
+    public void onNodeExpand(NodeExpandEvent event) {
         System.out.println(event);
         System.out.println(event.getTreeNode().isExpanded());
         event.getTreeNode().setExpanded(true);
     }
 
-    public void onNodeCollapse(NodeCollapseEvent event){
-         System.out.println(event);
-         System.out.println(event.getTreeNode().isExpanded());
-         event.getTreeNode().setExpanded(false);
-    }
-    public void savePresentationItem(AjaxBehaviorEvent event) {
-        if (selectedPresentationItem != null){
-            System.out.println(selectedPresentationItem.getDuration());
-            piFacade.edit(selectedPresentationItem);
-            
-        }
-        
-    }
-    
-    public void savePresentation(AjaxBehaviorEvent event){
-        if (selectedPresentation != null){
-            Presentation x = facade.update(selectedPresentation);
-            
-            
-            
-            int i = getList().indexOf(selectedPresentation);
-            System.out.println("update in list: " + i);
-            getList().set(i,x);
-            System.out.println("after updateing:");
-            
-            for (Presentation p : getList()){
-                System.out.println(p.getName() + p.getObjectVersion() + p.getId());
-            }
-            
-            System.out.println(getList().size());
-            
-//            selectedNode;
-            ((DefaultTreeNode) selectedNode).setData(x);
-            
-            selectedPresentation = x;
-            
-        }
-    }
-    
-    private void updateNode(Presentation p){
-        Presentation x = facade.find(p.getId());
-    }
-    
-    public void test(){
-        System.out.println("TESTTEST");
-        System.out.println("p:" + selectedPresentation);
-        System.out.println("pi:" + selectedPresentationItem);
+    public void onNodeCollapse(NodeCollapseEvent event) {
+        System.out.println(event);
+        System.out.println(event.getTreeNode().isExpanded());
+        event.getTreeNode().setExpanded(false);
     }
 
+    public void saveAll(AjaxBehaviorEvent event) {
+        System.out.println("Save All");
+
+        for (Presentation p : getList()) {
+            facade.edit(p);
+        }
+
+        // refresh all!
+        init();
+        selectedPresentation = null;
+        selectedPresentationItem = null;
+        selectedNode = null;
+
+        // set selection and expand / collapse state back
+
+    }
+
+    public void addPresentationItem(AjaxBehaviorEvent event) {
+        if (selectedPresentation == null){
+            // TODO: add message
+            return;
+        }
+        PresentationItem pi = new PresentationItem();
+        //pi.setPresentation(selectedPresentation);
+        selectedPresentation.getPresentationItems().add(pi);
+        piFacade.create(pi);
+        rebuildTree();
+    }
+    
+    public void addPresentation(AjaxBehaviorEvent event){
+        Presentation p = new Presentation();
+        facade.create(p);
+        setSelectedPresentation(p);
+        setSelectedPresentationItem(null);
+        // add at the end
+        getList().add(p);
+        rebuildTree();
+    }
+    /*
+     public void savePresentationItem(AjaxBehaviorEvent event) {
+     if (selectedPresentationItem != null){
+     System.out.println(selectedPresentationItem.getDuration());
+     piFacade.edit(selectedPresentationItem);
+            
+     }
+        
+     }
+    
+     public void savePresentation(AjaxBehaviorEvent event){
+     if (selectedPresentation != null){
+     Presentation x = facade.update(selectedPresentation);
+            
+            
+            
+     int i = getList().indexOf(selectedPresentation);
+     System.out.println("update in list: " + i);
+     getList().set(i,x);
+     System.out.println("after updateing:");
+            
+     for (Presentation p : getList()){
+     System.out.println(p.getName() + p.getObjectVersion() + p.getId());
+     }
+            
+     System.out.println(getList().size());
+            
+     //            selectedNode;
+     ((DefaultTreeNode) selectedNode).setData(x);
+            
+     selectedPresentation = x;
+            
+     }
+     }    
+     */
+
+    /* helper*/
+    private void rebuildTree() {
+        root = new DefaultTreeNode();
+        for (Presentation p : getList()) {
+            DefaultTreeNode pnode = new DefaultTreeNode("p", p, root);
+            if (selectedPresentation != null && selectedPresentation.equals(p)){
+                pnode.setExpanded(true);
+                setSelectedNode(pnode);
+            }
+            // level for p-items:
+            for (PresentationItem pi : p.getPresentationItems()) {
+                DefaultTreeNode pinode = new DefaultTreeNode("i", pi, pnode);
+                if (selectedPresentationItem != null && selectedPresentationItem.equals(pi)){
+                   pnode.setExpanded(true);
+                    
+                   setSelectedNode(pinode);
+                }
+            }
+        }
+    }
     /* getter & setter */
+
     public List<Presentation> getList() {
         return list;
     }
@@ -256,9 +297,8 @@ public class PresentationManager implements Serializable {
     public void setSelectedPresentationItem(PresentationItem selectedPresentationItem) {
         this.selectedPresentationItem = selectedPresentationItem;
     }
-    
-    
-    public String getConversationId(){
+
+    public String getConversationId() {
         return conversation.getId();
     }
 }
