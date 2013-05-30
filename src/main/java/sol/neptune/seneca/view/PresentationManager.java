@@ -11,7 +11,7 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
@@ -20,6 +20,7 @@ import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import sol.neptune.seneca.controller.PresentationFacade;
+import sol.neptune.seneca.controller.PresentationItemFacade;
 import sol.neptune.seneca.entities.Presentation;
 import sol.neptune.seneca.entities.PresentationItem;
 
@@ -34,30 +35,22 @@ public class PresentationManager implements Serializable {
     private static final long serialVersionUID = 1L;
     @Inject
     private Conversation conversation;
-    
     @EJB
     private PresentationFacade facade;
+    @EJB
+    private PresentationItemFacade piFacade;
     
     private List<Presentation> list;
     private DataModel<Presentation> model;
     private Presentation current;
-    
-    
     private TreeNode root = null;
     private TreeNode selectedNode;
-    
-    
     private Presentation selectedPresentation;
     private PresentationItem selectedPresentationItem;
-    
+
     @PostConstruct
     public void construct() {
-
-        if (conversation.isTransient()) {
-            conversation.begin();
-        }
         init();
-
     }
 
     @PreDestroy
@@ -69,20 +62,20 @@ public class PresentationManager implements Serializable {
         }
         current = null;
     }
-    
+
     public void init() {
         setList(facade.findAll());
         model = new ListDataModel<Presentation>(getList());
-        
+
         root = new DefaultTreeNode();
-        for (Presentation p : getList()){
-            TreeNode pnode = new DefaultTreeNode("p",p,root);
+        for (Presentation p : getList()) {
+            TreeNode pnode = new DefaultTreeNode("p", p, root);
             // level for p-items:
-            for (PresentationItem pi : p.getPresentationItems()){
+            for (PresentationItem pi : p.getPresentationItems()) {
                 TreeNode pinode = new DefaultTreeNode("i", pi, pnode);
             }
         }
-        
+
     }
 
     public String create() {
@@ -115,8 +108,8 @@ public class PresentationManager implements Serializable {
         }
         return "show?faces-redirect=true";
     }
-    
-    public String delete(){
+
+    public String delete() {
         setCurrent(model.getRowData());
         facade.remove(current);
         current = null;
@@ -124,32 +117,49 @@ public class PresentationManager implements Serializable {
         return "";
     }
 
-    
     /* event listener */
     
-    public void onNodeSelect(NodeSelectEvent event){
+    
+    public void startConversation(){
+        // nothing to do here since we have @PostConstruct doing our work
+        if (conversation.isTransient()) {
+            conversation.begin();
+        }
+    }
+    
+    public void onNodeSelect(NodeSelectEvent event) {
         // unselect:
         setSelectedPresentation(null);
         setSelectedPresentationItem(null);
         Object source = event.getTreeNode().getData();
 
         // select new one
-        if (source instanceof Presentation){
+        if (source instanceof Presentation) {
             setSelectedPresentation((Presentation) source);
-            
-        }
-        else if (source instanceof PresentationItem){
+
+        } else if (source instanceof PresentationItem) {
             setSelectedPresentationItem((PresentationItem) source);
         }
     }
-    
-    public void savePresentationItem(ActionEvent event){
-        System.out.println(event);
+
+    public void savePresentationItem(AjaxBehaviorEvent event) {
+        System.out.println(conversation.getId());
+        if (selectedPresentationItem != null){
+            System.out.println(selectedPresentationItem.getDuration());
+            piFacade.edit(selectedPresentationItem);
+        }
+        
+        
         
     }
     
+    public void test(){
+        System.out.println("TESTTEST");
+        System.out.println("p:" + selectedPresentation);
+        System.out.println("pi:" + selectedPresentationItem);
+    }
+
     /* getter & setter */
-    
     public List<Presentation> getList() {
         return list;
     }
@@ -207,8 +217,7 @@ public class PresentationManager implements Serializable {
     }
     
     
-    
-    
-    
-    
+    public String getConversationId(){
+        return conversation.getId();
+    }
 }
