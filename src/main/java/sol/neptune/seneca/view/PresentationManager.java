@@ -16,6 +16,8 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.event.NodeCollapseEvent;
+import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -48,6 +50,7 @@ public class PresentationManager implements Serializable {
     private Presentation selectedPresentation;
     private PresentationItem selectedPresentationItem;
 
+    
     @PostConstruct
     public void construct() {
         init();
@@ -65,7 +68,7 @@ public class PresentationManager implements Serializable {
 
     public void init() {
         setList(facade.findAll());
-        model = new ListDataModel<Presentation>(getList());
+        //model = new ListDataModel<Presentation>(getList());
 
         root = new DefaultTreeNode();
         for (Presentation p : getList()) {
@@ -141,16 +144,54 @@ public class PresentationManager implements Serializable {
             setSelectedPresentationItem((PresentationItem) source);
         }
     }
+    
+    public void onNodeExpand(NodeExpandEvent event){
+        System.out.println(event);
+        System.out.println(event.getTreeNode().isExpanded());
+        event.getTreeNode().setExpanded(true);
+    }
 
+    public void onNodeCollapse(NodeCollapseEvent event){
+         System.out.println(event);
+         System.out.println(event.getTreeNode().isExpanded());
+         event.getTreeNode().setExpanded(false);
+    }
     public void savePresentationItem(AjaxBehaviorEvent event) {
-        System.out.println(conversation.getId());
         if (selectedPresentationItem != null){
             System.out.println(selectedPresentationItem.getDuration());
             piFacade.edit(selectedPresentationItem);
+            
         }
         
-        
-        
+    }
+    
+    public void savePresentation(AjaxBehaviorEvent event){
+        if (selectedPresentation != null){
+            Presentation x = facade.update(selectedPresentation);
+            
+            
+            
+            int i = getList().indexOf(selectedPresentation);
+            System.out.println("update in list: " + i);
+            getList().set(i,x);
+            System.out.println("after updateing:");
+            
+            for (Presentation p : getList()){
+                System.out.println(p.getName() + p.getObjectVersion() + p.getId());
+            }
+            
+            System.out.println(getList().size());
+            
+//            selectedNode;
+            ((DefaultTreeNode) selectedNode).setData(x);
+            
+            selectedPresentation = x;
+            
+        }
+    }
+    
+    private void updateNode(Presentation p){
+        Presentation x = facade.find(p.getId());
     }
     
     public void test(){

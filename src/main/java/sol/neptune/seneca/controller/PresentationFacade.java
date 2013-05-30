@@ -27,4 +27,7 @@ public class PresentationFacade extends AbstractFacade<Presentation> {
         super(Presentation.class);
     }
     
+    public Presentation update(Presentation p){
+        return em.merge(p);
+    }
 }

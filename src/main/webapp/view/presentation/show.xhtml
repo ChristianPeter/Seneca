@@ -30,11 +30,15 @@
             </div>
             <div class="row-fluid">
                 <div class="span4">
-                    <p:tree id="tree" value="#{presentationManager.root}" var="node" selection="#{presentationManager.selectedNode}" selectionMode="single">
+                    <p:tree id="tree" value="#{presentationManager.root}" var="node" 
+                            selection="#{presentationManager.selectedNode}" selectionMode="single"
+                            >
                         <p:treeNode type="p">#{node.name}</p:treeNode>
-                        <p:treeNode type="i">##{node.position} #{node.duration}#{node.document}</p:treeNode>
+                        <p:treeNode type="i">##{node.position} #{node.duration}</p:treeNode>
 
                         <p:ajax event="select" listener="#{presentationManager.onNodeSelect}" update=":mainform:detailpanel"/>
+                        <p:ajax event="expand" listener="#{presentationManager.onNodeExpand}"/>
+                        <p:ajax event="collapse" listener="#{presentationManager.onNodeCollapse}"/>
                     </p:tree>
                 </div>
 
@@ -43,11 +47,36 @@
                         <h:panelGroup id="isPresenation" rendered="#{not empty presentationManager.selectedPresentation}">
 
                             <fieldset>
-                                <legend>Presentation:</legend>
+                                <legend>Presentation: <h:outputText id="p_legend" value="#{presentationManager.selectedPresentation.name}"/></legend>
 
-                                #{presentationManager.selectedPresentation}
+                                <div class="control-group">
+                                    <label class="control-label" for="mainform:p_name">#{msg['presentation.name']}</label>
+                                    <div class="controls">
+                                        <h:inputText id="p_name" value="#{presentationManager.selectedPresentation.name}">
+                                                <f:ajax event="change" render="tree p_legend" listener="#{presentationManager.savePresentation}"/>
+                                        </h:inputText>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="mainform:p_desc">#{msg['presentation.description']}</label>
+                                    <div class="controls">
+                                        <h:inputTextarea id="p_desc" value="#{presentationManager.selectedPresentation.description}"/>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-actions">
+                                    <h:commandLink value="Save P" styleClass="btn">
+                                        <f:ajax listener="#{presentationManager.savePresentation}" execute="p_name p_desc" render="tree"></f:ajax>
+                                    </h:commandLink>
+                                </div>
+
+
 
                             </fieldset>
+
+
 
                         </h:panelGroup>
 
@@ -58,7 +87,7 @@
 
                                 #{presentationManager.selectedPresentationItem}
                                 <h:inputText value="#{presentationManager.selectedPresentationItem.duration}">
-                                    <f:ajax event="change"/>
+                                    <f:ajax event="change" execute="@this"/>
                                 </h:inputText>
 
 
