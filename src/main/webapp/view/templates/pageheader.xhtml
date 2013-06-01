@@ -19,7 +19,7 @@
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <li class="active"><a href="./faces/view/home.xhtml">Home</a></li>
-                        <li><a href="./faces/view/presentation/show.xhtml">Presentations</a></li>
+                        <li><a href="./faces/view/presentation/manage.xhtml">Presentations</a></li>
                         <li><a href="./faces/view/document/show.xhtml">Documents</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
@@ -43,10 +43,6 @@
 
                     <h:form id="headerForm" styleClass="navbar-form pull-right">
                         <p:growl id="messages"></p:growl>
-                        <h:selectOneMenu  styleClass="selectpicker" value="#{localeManager.language}" onchange="submit();"
-                                          >
-                            <f:selectItems value="#{localeManager.localesAsString}"/>
-                        </h:selectOneMenu>
                         
                         <h:commandLink value="Logout" styleClass="btn" title="Logout" action="#{authenticator.logout()}">
                             <i class="icon-off"></i>

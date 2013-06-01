@@ -19,3 +19,7 @@ body {
     width: 100%;
     height: 400px;
 }
+
+.ui-widget-content {
+    border: 0;
+}
