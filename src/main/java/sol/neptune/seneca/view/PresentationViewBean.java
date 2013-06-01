@@ -42,7 +42,7 @@ public class PresentationViewBean implements Serializable {
     @EJB
     private PresentationItemFacade piFacade;
     private TreeNode root;
-    private Map<Long, PresentationTreeNode> nodemap;
+    private Map<String, PresentationTreeNode> nodemap;
     private Presentation selectedPresentation;
     private PresentationItem selectedPresentationItem;
     private TreeNode selectedNode;
@@ -59,7 +59,7 @@ public class PresentationViewBean implements Serializable {
     public void init() {
         List<Presentation> all = pFacade.findAll();
         if (nodemap == null) {
-            nodemap = new HashMap<Long, PresentationTreeNode>();
+            nodemap = new HashMap<String, PresentationTreeNode>();
         } else {
             nodemap.clear();
         }
@@ -70,30 +70,30 @@ public class PresentationViewBean implements Serializable {
             PresentationTreeNode pn = new PresentationTreeNode("p", p.toString(), root);
             pn.setEntityClass(p.getClass().getName());
             pn.setEntityId(p.getId());
-            nodemap.put(p.getId(), pn);
+            nodemap.put(p.getUuid(), pn);
 
             for (PresentationItem i : p.getPresentationItems()) {
                 PresentationTreeNode pin = new PresentationTreeNode("i", i.toString(), pn);
                 pin.setEntityClass(i.getClass().getName());
                 pin.setEntityId(i.getId());
-                nodemap.put(i.getId(), pin);
+                nodemap.put(i.getUuid(), pin);
             }
         }
     }
 
     /* event listener */
     public void addPresentation(AjaxBehaviorEvent event) {
-        
+
         Presentation back1 = selectedPresentation;
         PresentationItem back2 = selectedPresentationItem;
-        
+
         selectedPresentation = new Presentation();
         pFacade.create(selectedPresentation);
         PresentationTreeNode pn = new PresentationTreeNode("p", selectedPresentation.toString(), root);
         pn.setEntityClass(selectedPresentation.getClass().getName());
         pn.setEntityId(selectedPresentation.getId());
-        nodemap.put(selectedPresentation.getId(), pn);
-        
+        nodemap.put(selectedPresentation.getUuid(), pn);
+
         selectedPresentation = back1;
         selectedPresentationItem = back2;
     }
@@ -101,21 +101,21 @@ public class PresentationViewBean implements Serializable {
     public void addPresentationItem(AjaxBehaviorEvent event) {
 
         if (selectedPresentation != null) {
-            
+
             selectedPresentationItem = new PresentationItem();
             selectedPresentation.getPresentationItems().add(selectedPresentationItem);
             selectedPresentationItem.setPresentation(selectedPresentation);
             piFacade.create(selectedPresentationItem);
 
-            PresentationTreeNode pin = new PresentationTreeNode("i", selectedPresentationItem.toString(), nodemap.get(selectedPresentation.getId()));
+            PresentationTreeNode pin = new PresentationTreeNode("i", selectedPresentationItem.toString(), nodemap.get(selectedPresentation.getUuid()));
             pin.setEntityClass(selectedPresentationItem.getClass().getName());
             pin.setEntityId(selectedPresentationItem.getId());
-            nodemap.put(selectedPresentationItem.getId(), pin);
+            nodemap.put(selectedPresentationItem.getUuid(), pin);
 
             // since we don't want to select the new one.
             // instead we stay where we are.
-            selectedPresentationItem = null; 
-            
+            selectedPresentationItem = null;
+
         }
 
     }
@@ -123,26 +123,26 @@ public class PresentationViewBean implements Serializable {
     public void onSave(AjaxBehaviorEvent event) {
         if (selectedPresentation != null) {
             selectedPresentation = pFacade.edit(selectedPresentation);
-            System.out.println(selectedPresentation.getId());
-            nodemap.get(selectedPresentation.getId()).setData(selectedPresentation.toString());
+            nodemap.get(selectedPresentation.getUuid()).setData(selectedPresentation.toString());
 
         } else if (selectedPresentationItem != null) {
             selectedPresentationItem = piFacade.edit(selectedPresentationItem);
-            nodemap.get(selectedPresentationItem.getId()).setData(selectedPresentationItem.toString());
+            nodemap.get(selectedPresentationItem.getUuid()).setData(selectedPresentationItem.toString());
         }
-//        setSelectedNode(null);
-//        setSelectedPresentation(null);
-//        setSelectedPresentationItem(null);
 
     }
 
     public void onNodeSelect(NodeSelectEvent event) {
         PresentationTreeNode p = (PresentationTreeNode) event.getTreeNode();
-System.out.println(event);
+
+        /*
+         * 
+         * autosave:*/
         if (selectedPresentation != null || selectedPresentationItem != null) {
             onSave(null); // null is okay,since we currently don't use the event at all ;-)
         }
-
+        
+        
         if (Presentation.class.getName().equals(p.getEntityClass())) {
             // presentation selected
             setSelectedPresentation(pFacade.find(p.getEntityId()));
