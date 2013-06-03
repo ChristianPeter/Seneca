@@ -36,18 +36,17 @@ public class InstallationManager {
     private PresentationFacade presentationFacade;
     @EJB
     private DocumentFacade documentFacade;
-
     @EJB
     private ViewportFacade viewportFacade;
-    
+
     @PostConstruct
     public void installation() {
         try {
             createAdmin();
-            
+
             createViewports();
             createPresentation();
-            
+
         } catch (IOException ex) {
             Logger.getLogger(InstallationManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
@@ -64,7 +63,7 @@ public class InstallationManager {
             Logger.getLogger(InstallationManager.class.getName()).log(Level.INFO, "no admin. creating one.");
             admin = new UserAccount();
             admin.setUserName("admin");
-            admin.setPassword(EncryptionUtils.encryptPassword("batman!",admin.getUuid()));
+            admin.setPassword(EncryptionUtils.encryptPassword("batman!", admin.getUuid()));
             admin.setFamilyName("Sysop");
             admin.setGivenName("Friendly");
             userAccountFacade.create(admin);
@@ -80,13 +79,17 @@ public class InstallationManager {
 
         Document d = new Document();
 
-        PresentationItem i = new PresentationItem();
-        i.setDuration(10);
-        i.setPresentation(p);
-        p.getPresentationItems().add(i);
-        i.setDocument(d);
-        d.getPresentationItems().add(i);
+        PresentationItem i;
 
+        for (int k = 1; k < 10; k++) {
+            i = new PresentationItem();
+            i.setDuration(10);
+            i.setPosition(k);
+            i.setPresentation(p);
+            p.getPresentationItems().add(i);
+            i.setDocument(d);
+            d.getPresentationItems().add(i);
+        }
 
         Viewport vp = viewportFacade.findAll().get(0);
         p.getViewports().add(vp);
@@ -99,7 +102,7 @@ public class InstallationManager {
     private void createViewports() {
         Viewport vp = new Viewport();
         vp.setName("Projector One (Lobby)");
-        
+
         viewportFacade.create(vp);
     }
 }

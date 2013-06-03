@@ -67,13 +67,13 @@ public class PresentationViewBean implements Serializable {
         root = new PresentationTreeNode();
 
         for (Presentation p : all) {
-            PresentationTreeNode pn = new PresentationTreeNode("p", p.toString(), root);
+            PresentationTreeNode pn = new PresentationTreeNode("p", p, root);
             pn.setEntityClass(p.getClass().getName());
             pn.setEntityId(p.getId());
             nodemap.put(p.getUuid(), pn);
 
             for (PresentationItem i : p.getPresentationItems()) {
-                PresentationTreeNode pin = new PresentationTreeNode("i", i.toString(), pn);
+                PresentationTreeNode pin = new PresentationTreeNode("i", i, pn);
                 pin.setEntityClass(i.getClass().getName());
                 pin.setEntityId(i.getId());
                 nodemap.put(i.getUuid(), pin);
@@ -89,7 +89,7 @@ public class PresentationViewBean implements Serializable {
 
         selectedPresentation = new Presentation();
         pFacade.create(selectedPresentation);
-        PresentationTreeNode pn = new PresentationTreeNode("p", selectedPresentation.toString(), root);
+        PresentationTreeNode pn = new PresentationTreeNode("p", selectedPresentation, root);
         pn.setEntityClass(selectedPresentation.getClass().getName());
         pn.setEntityId(selectedPresentation.getId());
         nodemap.put(selectedPresentation.getUuid(), pn);
@@ -105,9 +105,10 @@ public class PresentationViewBean implements Serializable {
             selectedPresentationItem = new PresentationItem();
             selectedPresentation.getPresentationItems().add(selectedPresentationItem);
             selectedPresentationItem.setPresentation(selectedPresentation);
+            selectedPresentationItem.setPosition(selectedPresentation.getPresentationItems().size());
             piFacade.create(selectedPresentationItem);
 
-            PresentationTreeNode pin = new PresentationTreeNode("i", selectedPresentationItem.toString(), nodemap.get(selectedPresentation.getUuid()));
+            PresentationTreeNode pin = new PresentationTreeNode("i", selectedPresentationItem, nodemap.get(selectedPresentation.getUuid()));
             pin.setEntityClass(selectedPresentationItem.getClass().getName());
             pin.setEntityId(selectedPresentationItem.getId());
             nodemap.put(selectedPresentationItem.getUuid(), pin);

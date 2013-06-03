@@ -15,7 +15,7 @@
 
         <h:form id="mainform" styleClass="form-horizontal" onsubmit="return false;" >
 
-             <div class="row-fluid">
+            <div class="row-fluid">
 
 
                 <div class="btn-group">
@@ -53,16 +53,18 @@
 
             <div class="row-fluid">
                 <div class="span4">
-                    <p:tree id="tree" value="#{presentationViewBean.root}" var="node" 
-                            selection="#{presentationViewBean.selectedNode}" selectionMode="single"
-                            >
-                        <p:treeNode type="p">#{node}</p:treeNode>
-                        <p:treeNode type="i">#{node}</p:treeNode>
 
-                        <p:ajax event="select" listener="#{presentationViewBean.onNodeSelect}" update=":mainform:detailpanel" process="@form"/>
-                        <p:ajax event="expand" listener="#{presentationViewBean.onNodeExpand}"/>
-                        <p:ajax event="collapse" listener="#{presentationViewBean.onNodeCollapse}"/>
-                    </p:tree>
+
+                                <p:tree id="tree" value="#{presentationViewBean.root}" var="node" 
+                                        selection="#{presentationViewBean.selectedNode}" selectionMode="single"
+                                        >
+                                    <p:treeNode type="p">#{node.name}</p:treeNode>
+                                    <p:treeNode type="i">##{node.position}</p:treeNode>
+
+                                    <p:ajax event="select" listener="#{presentationViewBean.onNodeSelect}" update=":mainform:detailpanel" process="@form"/>
+                                    <p:ajax event="expand" listener="#{presentationViewBean.onNodeExpand}"/>
+                                    <p:ajax event="collapse" listener="#{presentationViewBean.onNodeCollapse}"/>
+                                </p:tree>
                 </div>
 
                 <div class="span6">
@@ -93,7 +95,7 @@
                                     <h:commandLink styleClass="btn btn-primary" value="Save">
                                         <f:ajax listener="#{presentationViewBean.onSave}" render="tree detailpanel" execute="@form"/>
                                     </h:commandLink>
-                                    
+
                                     <h:commandLink value="cancel" style="margin-left:10px;"/>
                                 </div>
 
@@ -134,7 +136,7 @@
                                     <h:commandLink styleClass="btn btn-primary" value="Save">
                                         <f:ajax listener="#{presentationViewBean.onSave}" render="tree detailpanel" execute="@form"/>
                                     </h:commandLink>
-                                    
+
                                     <h:commandLink value="cancel" style="margin-left:10px;"/>
                                 </div>
                             </fieldset>
@@ -146,7 +148,7 @@
 
 
                     </h:panelGroup>
-    
+
                 </div>
             </div>
         </h:form>

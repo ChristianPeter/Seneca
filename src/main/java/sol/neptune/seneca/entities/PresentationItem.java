@@ -26,11 +26,8 @@ public class PresentationItem extends AbstractEntity implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "doc_id")
     private Document document;
-    
     private Integer duration;
-    
     private Integer position;
-    
     private boolean active = true;
 
     /* getter and setter */
@@ -73,9 +70,4 @@ public class PresentationItem extends AbstractEntity implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
-    
-    
-    
-    
 }
