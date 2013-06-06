@@ -14,7 +14,7 @@
         <f:event type="preRenderView" listener="#{presentationViewBean.startConversation}" />
 
         <h:form id="mainform" styleClass="form-horizontal" onsubmit="return false;" >
-
+            <div style="clear:both;"></div>
             <div class="row-fluid">
                 <div class="span4">
                     <fieldset >
@@ -60,7 +60,7 @@
                     </fieldset>
                 </div>
 
-                <div class="span6">
+                <div class="span8">
 
                     <h:panelGroup id="detailpanel">
                         <h:panelGroup id="isPresenation" rendered="#{not empty presentationViewBean.selectedPresentation}">
