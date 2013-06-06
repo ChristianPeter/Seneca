@@ -83,11 +83,12 @@ public class PresentationViewBean implements Serializable {
 
     /* event listener */
     public void addPresentation(AjaxBehaviorEvent event) {
-
+        System.out.println("addPresentation");
         Presentation back1 = selectedPresentation;
         PresentationItem back2 = selectedPresentationItem;
 
         selectedPresentation = new Presentation();
+        selectedPresentation.setName("new");
         pFacade.create(selectedPresentation);
         PresentationTreeNode pn = new PresentationTreeNode("p", selectedPresentation, root);
         pn.setEntityClass(selectedPresentation.getClass().getName());
@@ -100,11 +101,13 @@ public class PresentationViewBean implements Serializable {
 
     public void addPresentationItem(AjaxBehaviorEvent event) {
 
+        System.out.println("addPresentationItem");
         if (selectedPresentation != null) {
+            System.out.println("selectedPresentation: " + selectedPresentation);
 
             selectedPresentationItem = new PresentationItem();
             selectedPresentation.getPresentationItems().add(selectedPresentationItem);
-            selectedPresentationItem.setPresentation(selectedPresentation);
+            //selectedPresentationItem.setPresentation(selectedPresentation);
             selectedPresentationItem.setPosition(selectedPresentation.getPresentationItems().size());
             piFacade.create(selectedPresentationItem);
 
@@ -122,13 +125,16 @@ public class PresentationViewBean implements Serializable {
     }
 
     public void onSave(AjaxBehaviorEvent event) {
+        System.out.println("onsave...");
         if (selectedPresentation != null) {
+            System.out.println("selectedP:" + selectedPresentation);
             selectedPresentation = pFacade.edit(selectedPresentation);
-            nodemap.get(selectedPresentation.getUuid()).setData(selectedPresentation.toString());
+            nodemap.get(selectedPresentation.getUuid()).setData(selectedPresentation);
 
         } else if (selectedPresentationItem != null) {
+            System.out.println("selectedPI:" + selectedPresentationItem);
             selectedPresentationItem = piFacade.edit(selectedPresentationItem);
-            nodemap.get(selectedPresentationItem.getUuid()).setData(selectedPresentationItem.toString());
+            nodemap.get(selectedPresentationItem.getUuid()).setData(selectedPresentationItem);
         }
 
     }
@@ -210,5 +216,11 @@ public class PresentationViewBean implements Serializable {
 
     public void setSelectedNode(TreeNode selectedNode) {
         this.selectedNode = selectedNode;
+    }  
+
+    public Map<String, PresentationTreeNode> getNodemap() {
+        return nodemap;
     }
+    
+    
 }

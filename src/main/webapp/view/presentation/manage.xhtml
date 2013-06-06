@@ -16,55 +16,48 @@
         <h:form id="mainform" styleClass="form-horizontal" onsubmit="return false;" >
 
             <div class="row-fluid">
-
-
-                <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                        #{msg['new']}
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- dropdown menu links -->
-                        <li>
-                            <h:commandLink  value="NewP">
-                                <f:ajax listener="#{presentationViewBean.addPresentation}" render="tree detailpanel"/>
-                            </h:commandLink>
-                        </li>
-                        <li>
-                            <h:commandLink value="NewPItem">
-                                <f:ajax listener="#{presentationViewBean.addPresentationItem}" render="tree detailpanel"/>
-                            </h:commandLink> 
-                        </li>
-                        <li>
-                            <h:commandLink value="Import">
-                            </h:commandLink> 
-                        </li>
-
-                    </ul>
-                </div>
-
-
-
-
-
-            </div>
-
-
-
-            <div class="row-fluid">
                 <div class="span4">
+                    <fieldset >
+                        <legend>
+                            <div class="btn-group">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                    #{msg['new']}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- dropdown menu links -->
+                                    <li>
+                                        <h:commandLink  value="NewP">
+                                            <f:ajax listener="#{presentationViewBean.addPresentation}" render="tree detailpanel"/>
+                                        </h:commandLink>
+                                    </li>
+                                    <li>
+                                        <h:commandLink value="NewPItem">
+                                            <f:ajax listener="#{presentationViewBean.addPresentationItem}" render="tree detailpanel"/>
+                                        </h:commandLink> 
+                                    </li>
+                                    <li>
+                                        <h:commandLink value="Import">
+                                        </h:commandLink> 
+                                    </li>
 
+                                </ul>
+                            </div>
 
-                                <p:tree id="tree" value="#{presentationViewBean.root}" var="node" 
-                                        selection="#{presentationViewBean.selectedNode}" selectionMode="single"
-                                        >
-                                    <p:treeNode type="p">#{node.name}</p:treeNode>
-                                    <p:treeNode type="i">##{node.position}</p:treeNode>
+                            Tree
+                        </legend>
 
-                                    <p:ajax event="select" listener="#{presentationViewBean.onNodeSelect}" update=":mainform:detailpanel" process="@form"/>
-                                    <p:ajax event="expand" listener="#{presentationViewBean.onNodeExpand}"/>
-                                    <p:ajax event="collapse" listener="#{presentationViewBean.onNodeCollapse}"/>
-                                </p:tree>
+                        <p:tree id="tree" value="#{presentationViewBean.root}" var="node" 
+                                selection="#{presentationViewBean.selectedNode}" selectionMode="single"
+                                >
+                            <p:treeNode type="p">#{node.name}</p:treeNode>
+                            <p:treeNode type="i">##{node.position}</p:treeNode>
+
+                            <p:ajax event="select" listener="#{presentationViewBean.onNodeSelect}" update=":mainform:detailpanel" process="@form"/>
+                            <p:ajax event="expand" listener="#{presentationViewBean.onNodeExpand}"/>
+                            <p:ajax event="collapse" listener="#{presentationViewBean.onNodeCollapse}"/>
+                        </p:tree>
+                    </fieldset>
                 </div>
 
                 <div class="span6">
@@ -72,25 +65,59 @@
                     <h:panelGroup id="detailpanel">
                         <h:panelGroup id="isPresenation" rendered="#{not empty presentationViewBean.selectedPresentation}">
 
-                            <fieldset>
-                                <!--<legend>Presentation: <h:outputText id="p_legend" value="#{presentationViewBean.selectedPresentation.name}"/></legend>-->
+                            <fieldset >
+                                <legend>Presentation: <h:outputText id="p_legend" value="#{presentationViewBean.selectedPresentation.name}"/></legend>
 
-                                <div class="control-group">
-                                    <label class="control-label" for="mainform:p_name">#{msg['presentation.name']}</label>
-                                    <div class="controls">
-                                        <h:inputText id="p_name" value="#{presentationViewBean.selectedPresentation.name}">
-                                        </h:inputText>
+                                <div style="max-height:500px; overflow-y: auto;">
+                                    <div class="control-group">
+                                        <label class="control-label" for="mainform:p_name">#{msg['presentation.name']}</label>
+                                        <div class="controls">
+                                            <h:inputText id="p_name" value="#{presentationViewBean.selectedPresentation.name}">
+                                            </h:inputText>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="control-group">
-                                    <label class="control-label" for="mainform:p_desc">#{msg['presentation.description']}</label>
-                                    <div class="controls">
-                                        <h:inputTextarea id="p_desc" value="#{presentationViewBean.selectedPresentation.description}">
-                                        </h:inputTextarea>
+                                    <div class="control-group">
+                                        <label class="control-label" for="mainform:p_desc">#{msg['presentation.description']}</label>
+                                        <div class="controls">
+                                            <h:inputTextarea id="p_desc" value="#{presentationViewBean.selectedPresentation.description}">
+                                            </h:inputTextarea>
+                                        </div>
                                     </div>
-                                </div>
 
+                                    <div class="presitem-table">
+                                        <h:dataTable styleClass="table table-striped" value="#{presentationViewBean.selectedPresentation.presentationItems}" var="item">
+
+                                            <h:column>
+                                                <h:commandLink value="" styleClass="btn">
+                                                    <f:ajax />
+                                                    <i class="icon-arrow-up"></i>    
+                                                </h:commandLink>
+                                                <h:commandLink value="" styleClass="btn">
+                                                    <f:ajax />
+                                                    <i class="icon-arrow-down"></i>    
+                                                </h:commandLink>
+                                            </h:column> 
+
+                                            <h:column>
+                                                <f:facet name="header">pos</f:facet>
+                                                <h:outputText value="#{item.position}"/>
+                                            </h:column>
+
+                                            <h:column>
+                                                <f:facet name="header">duration</f:facet>
+                                                <h:outputText value="#{item.duration}"/>
+                                            </h:column>
+
+                                            <h:column>
+                                                <f:facet name="header">document</f:facet>
+                                                <h:outputText value="#{item.document}"/>
+                                            </h:column>
+                                        </h:dataTable>
+
+                                    </div>
+
+                                </div>
                                 <div class="form-actions">
                                     <h:commandLink styleClass="btn btn-primary" value="Save">
                                         <f:ajax listener="#{presentationViewBean.onSave}" render="tree detailpanel" execute="@form"/>
@@ -109,7 +136,7 @@
                         <h:panelGroup id="isPresItem" rendered="#{not empty presentationViewBean.selectedPresentationItem}">
 
                             <fieldset>
-                                <!--<legend>Presentation-Item: <h:outputText id="pi_legend" value="#{presentationViewBean.selectedPresentationItem.id}"/></legend>-->
+                                <legend>Presentation-Item: <h:outputText id="pi_legend" value="#{presentationViewBean.selectedPresentationItem.id}"/></legend>
 
 
                                 <div class="control-group">
