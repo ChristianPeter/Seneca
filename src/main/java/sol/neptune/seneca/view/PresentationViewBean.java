@@ -5,6 +5,7 @@
 package sol.neptune.seneca.view;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,15 +14,20 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Produces;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.TreeNode;
+import sol.neptune.seneca.controller.DocumentFacade;
 import sol.neptune.seneca.controller.PresentationFacade;
 import sol.neptune.seneca.controller.PresentationItemFacade;
+import sol.neptune.seneca.entities.Document;
 import sol.neptune.seneca.entities.Presentation;
 import sol.neptune.seneca.entities.PresentationItem;
 import sol.neptune.seneca.entities.PresentationTreeNode;
@@ -41,12 +47,19 @@ public class PresentationViewBean implements Serializable {
     private PresentationFacade pFacade;
     @EJB
     private PresentationItemFacade piFacade;
+    
+    @EJB
+    private DocumentFacade documentFacade;
+    
     private TreeNode root;
     private Map<String, PresentationTreeNode> nodemap;
     private Presentation selectedPresentation;
     private PresentationItem selectedPresentationItem;
     private TreeNode selectedNode;
 
+    
+    private List<Document> availableDocuments;
+    
     @PostConstruct
     public void construct() {
         init();
@@ -81,6 +94,29 @@ public class PresentationViewBean implements Serializable {
         }
     }
 
+    @Produces
+    @Dependent
+    @Named("availableDocuments")
+    public List<Document> getAvailableDocuments() {
+        
+        System.out.println("init available documents...");
+        if (availableDocuments == null){
+            availableDocuments = new ArrayList<Document>();
+        }
+        else{
+            availableDocuments.clear();
+        }
+        
+        // TODO: check for inactive docs etc.
+        List<Document> allDocs = documentFacade.findAll();
+        availableDocuments.addAll(allDocs);
+      
+        return availableDocuments;
+    }
+
+    
+    
+    
     /* event listener */
     public void addPresentation(AjaxBehaviorEvent event) {
         System.out.println("addPresentation");

@@ -68,6 +68,8 @@
                             <fieldset >
                                 <legend>Presentation: <h:outputText id="p_legend" value="#{presentationViewBean.selectedPresentation.name}"/></legend>
 
+                                <h:outputText value="empty presentation. click on 'new presentationitem' to add a new item or use import to read a presentation from file (MS-Powerpoint or PDF)"
+                                              rendered="#{empty presentationViewBean.selectedPresentation.presentationItems}"/>
                                 <div style="max-height:500px; overflow-y: auto;">
                                     <div class="control-group">
                                         <label class="control-label" for="mainform:p_name">#{msg['presentation.name']}</label>
@@ -147,6 +149,17 @@
                                     </div>
                                 </div>
 
+                                
+                                <div class="control-group">
+                                    <label class="control-label" for="mainform:pi_seldoc">#{msg['presentationItem.document']}</label>
+                                    <div class="controls">
+                                        <h:selectOneMenu id="pi_seldoc" value="#{presentationViewBean.selectedPresentationItem.document}">
+                                            <f:selectItems value="#{availableDocuments}" var="doc" itemLabel="#{doc.name}x"/>
+                                            <f:converter converterId="entityConverter"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                
                                 <div class="control-group">
                                     <label class="control-label" for="mainform:pi_active">#{msg['presentationItem.active']}</label>
                                     <div class="controls">
